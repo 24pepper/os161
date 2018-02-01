@@ -385,6 +385,7 @@ file      syscall/file_syscalls.c
 
 file      startup/main.c
 file      startup/menu.c
+file	  startup/hello.c
 
 ########################################
 #                                      #
@@ -441,7 +442,12 @@ file		test/fstest.c
 optfile net	test/nettest.c
 # UW Mod
 file    test/uw-tests.c
-
+# Kevin Beshears test code
+file            test/printcmdarg.c
+file            test/threadfun.c
+file            test/unsafethreadcounter.c
+file            test/lockthreadcounter.c
+file            test/spinlockthreadcounter.c
 
 # UW options for different assignments
 defoption A0

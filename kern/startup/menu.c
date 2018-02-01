@@ -474,6 +474,11 @@ static const char *testmenu[] = {
 	"[fs3] FS write stress       (4)     ",
 	"[fs4] FS write stress 2     (4)     ",
 	"[fs5] FS create stress      (4)     ",
+	"[cmd] Print Command line Args       ",        //I did this
+	"[ftt] Fun Thread test               ",       // this one too
+        "[ust] Unsafe Thread Counter         ",       // and this one
+        "[ltc] Lock Thread Counter           ",       // but really this one
+        "[stc] Spin Lock Thread Counter      ",      //maybe I did this one, maybe I didnt
 	NULL
 };
 
@@ -587,6 +592,11 @@ static struct {
 	{ "fs3",	writestress },
 	{ "fs4",	writestress2 },
 	{ "fs5",	createstress },
+	{ "cmd",        printcmdarg },            //I did this
+	{ "ftt",        mythreadtest },           // this too
+        { "ust",        unsafethreadcounter },    // and this one
+        { "ltc",        lockthreadcounter },      // really this one
+        { "stc",        spinlockthreadcounter},  //maybe this one
 
 	{ NULL, NULL }
 };
@@ -666,12 +676,12 @@ menu_execute(char *line, int isargs)
 	     command = strtok_r(NULL, ";", &context)) {
 
 		if (isargs) {
-			kprintf("OS/161 kernel: %s\n", command);
+			kprintf("OS/161 test kernel: %s\n", command);
 		}
 
 		result = cmd_dispatch(command);
 		if (result) {
-			kprintf("Menu command failed: %s\n", strerror(result));
+			kprintf("Menu blarp command failed: %s\n", strerror(result));
 			if (isargs) {
 				panic("Failure processing kernel arguments\n");
 			}

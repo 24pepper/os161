@@ -80,6 +80,13 @@ int malloctest(int, char **);
 int mallocstress(int, char **);
 int nettest(int, char **);
 
+/* Kevin Beshears tests */
+void hello(void);
+int printcmdarg(int, char **);
+int mythreadtest(int, char **);
+int unsafethreadcounter(int,char **);
+int lockthreadcounter(int, char **);
+int spinlockthreadcounter(int, char **);
 /* Routine for running a user-level program. */
 int runprogram(char *progname);
 

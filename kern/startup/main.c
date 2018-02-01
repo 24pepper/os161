@@ -103,6 +103,7 @@ boot(void)
 
 	kprintf("Kevin Beshears system version %s (%s #%d)\n", 
 		GROUP_VERSION, buildconfig, buildversion);
+	hello();
 	kprintf("\n");
 
 	/* Early initialization. */
