@@ -363,3 +363,49 @@ curproc_setas(struct addrspace *newas)
 	spinlock_release(&proc->p_lock);
 	return oldas;
 }
+
+struct proc *
+proc_create_fork(const char *name)
+{
+        struct proc *proc;
+
+        proc = proc_create(name);
+        if (proc == NULL) {
+                return NULL;
+        }
+
+          
+        /* VM fields */
+
+        proc->p_addrspace = NULL;
+
+        /* VFS fields */
+
+#ifdef UW
+        /* we do not need to acquire the p_lock here, the running thread should
+           have the only reference to this process */
+        /* also, acquiring the p_lock is problematic because VOP_INCREF may block */
+        if (curproc->p_cwd != NULL) {
+                VOP_INCREF(curproc->p_cwd);
+                proc->p_cwd = curproc->p_cwd;
+        }
+#else // UW
+        spinlock_acquire(&curproc->p_lock);
+        if (curproc->p_cwd != NULL) {
+                VOP_INCREF(curproc->p_cwd);
+                proc->p_cwd = curproc->p_cwd;
+        }
+        spinlock_release(&curproc->p_lock);
+#endif // UW
+
+#ifdef UW
+        /* increment the count of processes */
+        /* we are assuming that all procs, including those created by fork(),
+           are created using a call to proc_create_runprogram  */
+        P(proc_count_mutex); 
+        proc_count++;
+        V(proc_count_mutex);
+#endif // UW
+        return proc;
+}
+

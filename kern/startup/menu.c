@@ -106,6 +106,7 @@ cmd_progthread(void *ptr, unsigned long nargs)
 	if (result) {
 		kprintf("Running program %s failed: %s\n", args[0],
 			strerror(result));
+                V(no_proc_sem);
 		return;
 	}
 
@@ -155,7 +156,7 @@ common_prog(int nargs, char **args)
 #ifdef UW
 	/* wait until the process we have just launched - and any others that it 
 	   may fork - is finished before proceeding */
-	P(no_proc_sem);
+	P(no_proc_sem);    
 #endif // UW
 
 	return 0;

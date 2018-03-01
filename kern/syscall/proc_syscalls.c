@@ -98,18 +98,31 @@ int sys_fork(struct trapframe *tf, pid_t *retval){
   struct trapframe * temp_tf;
   DEBUG(DB_SYSCALL,"Syscall: sys_fork()\n");
   int err;
+  struct proc *proc;
+  struct addrspace * child_vmspace = NULL;
 
+  KASSERT(child_vmspace == NULL);
+  as_copy(curproc->p_addrspace, &child_vmspace);
+  if(child_vmspace == NULL){
+  	kprintf("sys_fork: as_copy failed %s\n",strerror(ENOMEM));
+        return ENOMEM;
+  }
+
+  proc = proc_create_fork("child");
+  proc->p_addrspace = child_vmspace;
+  proc->p_pid = 1;
   temp_tf = kmalloc(sizeof(tf));
   temp_tf = tf;
-  err = thread_fork("test",curproc,uproc_thread,temp_tf,1);
+
+  err = thread_fork("test",proc,uproc_thread,temp_tf,1);
 
   if(err){
   	return err;
   }
 
- for(int i = 0; i < 100000; ++i){
+ //for(int i = 0; i < 100000; ++i){
 
-    }
+   // }
 
   kprintf("Parent returning after thread fork\n");
 
@@ -122,7 +135,17 @@ int sys_fork(struct trapframe *tf, pid_t *retval){
 void uproc_thread(void *temp_tr, unsigned long k){
 	(void)k;
 	(void)temp_tr;
+        struct addrspace *as;
         kprintf("Child - I made it to the child user uproc_thread!\n");
 
+	//proc_remthread(curthread);      // change
+        KASSERT(curproc->p_addrspace != NULL);
+        as_deactivate();
+        struct proc *p = curproc;
+        as = curproc_setas(NULL);
+        as_destroy(as);
+        proc_remthread(curthread);
+        proc_destroy(p);
 	thread_exit();
+        panic("return from thread_exit in sys_exit\n");
 }

@@ -63,6 +63,7 @@ runprogram(char *progname)
 	result = vfs_open(progname, O_RDONLY, 0, &v);
 	if (result) {
 		//proc_destroy(curproc);     //little test
+		proc_remthread(curthread);   // another little test
 		return result;
 	}
 

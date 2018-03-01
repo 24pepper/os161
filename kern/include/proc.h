@@ -103,5 +103,7 @@ struct addrspace *curproc_getas(void);
 /* Change the address space of the current process, and return the old one. */
 struct addrspace *curproc_setas(struct addrspace *);
 
+/* Create a process from a fork call. Kevin Beshears addition */
+struct proc *proc_create_fork(const char *name);
 
 #endif /* _PROC_H_ */
