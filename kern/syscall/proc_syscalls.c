@@ -16,7 +16,6 @@
 
 void sys__exit(int exitcode) {
 
-  kprintf("Got into sys__exit\n");
   struct addrspace *as;
   struct proc *p = curproc;
   /* for now, just include this to keep the compiler from complaining about

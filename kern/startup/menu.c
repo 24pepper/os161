@@ -104,7 +104,6 @@ cmd_progthread(void *ptr, unsigned long nargs)
 
 	result = runprogram(progname);
 	if (result) {
-		//kprintf("in cmd_progthread, process name is %s\n", curproc->p_name);
 		kprintf("Running program %s failed: %s\n", args[0],
 			strerror(result));
 		return;
@@ -152,13 +151,11 @@ common_prog(int nargs, char **args)
 		proc_destroy(proc);
 		return result;
 	}
-	kprintf("got passed forking the thread in common_prog, proc name is %s\n", curproc ->p_name);
 
 #ifdef UW
 	/* wait until the process we have just launched - and any others that it 
 	   may fork - is finished before proceeding */
 	P(no_proc_sem);
-	kprintf("got passed the semaphore\n");
 #endif // UW
 
 	return 0;

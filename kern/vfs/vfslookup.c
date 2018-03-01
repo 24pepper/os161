@@ -282,7 +282,6 @@ vfs_lookup(char *path, struct vnode **retval)
 	}
 
 	result = VOP_LOOKUP(startvn, path, retval);
-	kprintf("result is %d\n", result);
 	VOP_DECREF(startvn);
 	vfs_biglock_release();
 	return result;
