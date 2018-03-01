@@ -51,6 +51,7 @@ vfs_open(char *path, int openflags, mode_t mode, struct vnode **ret)
 
 	how = openflags & O_ACCMODE;
 
+
 	switch (how) {
 	    case O_RDONLY:
 		canwrite=0;
@@ -67,7 +68,6 @@ vfs_open(char *path, int openflags, mode_t mode, struct vnode **ret)
 		char name[NAME_MAX+1];
 		struct vnode *dir;
 		int excl = (openflags & O_EXCL)!=0;
-		
 		result = vfs_lookparent(path, &dir, name, sizeof(name));
 		if (result) {
 			return result;

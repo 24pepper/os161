@@ -270,7 +270,6 @@ proc_create_runprogram(const char *name)
 	proc_count++;
 	V(proc_count_mutex);
 #endif // UW
-
 	return proc;
 }
 

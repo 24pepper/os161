@@ -699,7 +699,6 @@ sfs_dir_link(struct sfs_vnode *sv, const char *name, uint32_t ino, int *slot)
 	int emptyslot = -1;
 	int result;
 	struct sfs_dir sd;
-
 	/* Look up the name. We want to make sure it *doesn't* exist. */
 	result = sfs_dir_findname(sv, name, NULL, NULL, &emptyslot);
 	if (result!=0 && result!=ENOENT) {

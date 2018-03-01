@@ -52,6 +52,9 @@ struct proc {
 	char *p_name;			/* Name of this process */
 	struct spinlock p_lock;		/* Lock for this structure */
 	struct threadarray p_threads;	/* Threads in this process */
+        pid_t p_pid;                    /* My pid */
+        pid_t pp_pid;                   /* Parent process */
+        struct proc *p_pproc;
 
 	/* VM */
 	struct addrspace *p_addrspace;	/* virtual address space */

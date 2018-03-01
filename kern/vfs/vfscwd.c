@@ -54,6 +54,7 @@ vfs_getcurdir(struct vnode **ret)
 	if (curproc->p_cwd!=NULL) {
 		VOP_INCREF(curproc->p_cwd);
 		*ret = curproc->p_cwd;
+		
 	}
 	else {
 		rv = ENOENT;

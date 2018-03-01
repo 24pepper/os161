@@ -403,6 +403,7 @@ cpu_hatch(unsigned software_number)
 	kprintf("cpu%u: %s\n", software_number, cpu_identify());
 
 	V(cpu_startup_sem);
+	kprintf("thread_exit being called from thread.c");
 	thread_exit();
 }
 
@@ -783,6 +784,7 @@ thread_exit(void)
 	struct thread *cur;
 
 	cur = curthread;
+        kprintf("curproc's name in thread_exit is %s\n", curproc->p_name);
 
 #ifdef UW
 	/* threads for user processes should have detached from their process

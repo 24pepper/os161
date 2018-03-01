@@ -9,12 +9,14 @@
 #include <thread.h>
 #include <addrspace.h>
 #include <copyinout.h>
+#include <mips/trapframe.h>
 
   /* this implementation of sys__exit does not do anything with the exit code */
   /* this needs to be fixed to get exit() and waitpid() working properly */
 
 void sys__exit(int exitcode) {
 
+  kprintf("Got into sys__exit\n");
   struct addrspace *as;
   struct proc *p = curproc;
   /* for now, just include this to keep the compiler from complaining about
@@ -42,7 +44,6 @@ void sys__exit(int exitcode) {
   /* if this is the last user process in the system, proc_destroy()
      will wake up the kernel menu thread */
   proc_destroy(p);
-  
   thread_exit();
   /* thread_exit() does not return, so we should never get here */
   panic("return from thread_exit in sys_exit\n");
@@ -92,3 +93,37 @@ sys_waitpid(pid_t pid,
   return(0);
 }
 
+/* stub handler for the fork() system call (created by Kevin Beshears)*/
+
+int sys_fork(struct trapframe *tf, pid_t *retval){
+  struct trapframe * temp_tf;
+  DEBUG(DB_SYSCALL,"Syscall: sys_fork()\n");
+  int err;
+
+  temp_tf = kmalloc(sizeof(tf));
+  temp_tf = tf;
+  err = thread_fork("test",curproc,uproc_thread,temp_tf,1);
+
+  if(err){
+  	return err;
+  }
+
+ for(int i = 0; i < 100000; ++i){
+
+    }
+
+  kprintf("Parent returning after thread fork\n");
+
+  //*retval = proc -> p_pid;
+  *retval = 2;
+  kprintf("Parent finally leaving sys_fork\n");
+   return(0);
+}
+
+void uproc_thread(void *temp_tr, unsigned long k){
+	(void)k;
+	(void)temp_tr;
+        kprintf("Child - I made it to the child user uproc_thread!\n");
+
+	thread_exit();
+}
